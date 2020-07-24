@@ -3,7 +3,7 @@ from torch import nn
 
 from models import c3d, squeezenet, mobilenet, shufflenet, mobilenetv2, shufflenetv2, resnext, resnet
 
-
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 def generate_model(opt):
     assert opt.model in ['c3d', 'squeezenet', 'mobilenet', 'resnext', 'resnet',
                          'shufflenet', 'mobilenetv2', 'shufflenetv2']
@@ -116,8 +116,6 @@ def generate_model(opt):
                 sample_size=opt.sample_size,
                 sample_duration=opt.sample_duration)
 
-
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
     if not opt.no_cuda:
         model = model.to(device)
         model = nn.DataParallel(model, device_ids=None)
