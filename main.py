@@ -21,7 +21,7 @@ from validation import val_epoch
 import test
 
 
-
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 if __name__ == '__main__':
     opt = parse_opts()
     if opt.root_path != '':
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     criterion = nn.CrossEntropyLoss()
     if not opt.no_cuda:
-        criterion = criterion.cuda()
+        criterion = criterion.to(device)
 
     if opt.no_mean_norm and not opt.std_norm:
         norm_method = Normalize([0, 0, 0], [1, 1, 1])
