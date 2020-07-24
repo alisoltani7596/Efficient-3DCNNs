@@ -115,7 +115,6 @@ def generate_model(opt):
                 shortcut_type=opt.resnet_shortcut,
                 sample_size=opt.sample_size,
                 sample_duration=opt.sample_duration)
-
     if not opt.no_cuda:
         model = model.to(device)
         model = nn.DataParallel(model, device_ids=None)
