@@ -117,9 +117,9 @@ def generate_model(opt):
                 sample_duration=opt.sample_duration)
 
 
-
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
     if not opt.no_cuda:
-        model = model.cuda()
+        model = model.to(device)
         model = nn.DataParallel(model, device_ids=None)
         pytorch_total_params = sum(p.numel() for p in model.parameters() if
                                p.requires_grad)
@@ -142,7 +142,7 @@ def generate_model(opt):
                                 nn.Conv3d(model.module.classifier[1].in_channels, opt.n_finetune_classes, kernel_size=1),
                                 nn.ReLU(inplace=True),
                                 nn.AvgPool3d((1,4,4), stride=1))
-                model.module.classifier = model.module.classifier.cuda()
+                model.module.classifier = model.module.classifier.to(device)
             else:
                 model.module.fc = nn.Linear(model.module.fc.in_features, opt.n_finetune_classes)
                 model.module.fc = model.module.fc.cuda()
